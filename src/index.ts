@@ -1,12 +1,8 @@
 import 'module-alias/register'
-import express, { Application, Request, Response } from 'express'
+import { SetupServer } from '@src/server'
 
-const app: Application = express()
-
-app.get('/', (_: Request, res: Response) => {
-  res.send('hello world')
-})
-
-app.listen(3000, () => {
-  console.log('Listen on 3000'); 
-})
+(async (): Promise<void> => {
+  const server = new SetupServer()
+  await server.init()
+  server.start()
+})()
