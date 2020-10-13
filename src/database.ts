@@ -2,6 +2,8 @@ import { EntityManager, EntityRepository, MikroORM } from '@mikro-orm/core'
 import { MongoDriver } from '@mikro-orm/mongodb';
 import { BaseEntity } from './models/BaseEntity'
 import { User } from './models/User'
+import config, { IConfig } from 'config'
+const dbConfig: IConfig = config.get('App.database')
 
 export const DI = {} as {
   orm: MikroORM,
@@ -14,7 +16,7 @@ export const connect = async (): Promise<MikroORM>  => {
     entities: [User, BaseEntity],
     type: 'mongo',
     clientUrl:
-      'hardcode',
+      dbConfig.get("mongoURL"),
     implicitTransactions: true, // defaults to false
     // baseDir: __dirname, // defaults to `process.cwd()`
   })

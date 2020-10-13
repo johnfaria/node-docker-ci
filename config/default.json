@@ -1,0 +1,11 @@
+{
+  "App": {
+    "database": {
+      "mongoURL": "mongodb://localhost:27017/my-database"
+    },
+    "logger": {
+      "enabled": true,
+      "level": "info"
+    }
+  }
+}

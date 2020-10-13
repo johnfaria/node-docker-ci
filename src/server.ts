@@ -3,6 +3,9 @@ import * as http from 'http'
 import indexRoute from '@src/routes/index.route'
 import * as database from './database'
 import { MikroORM } from '@mikro-orm/core'
+import logger from './logger'
+import cors from 'cors'
+import expressPino from 'express-pino-logger'
 
 export class SetupServer {
   private server?: http.Server
@@ -22,6 +25,8 @@ export class SetupServer {
 
   private middlewares(): void {
     this.app.use(express.json())
+    this.app.use(cors({ origin: '*' }))
+    this.app.use(expressPino(logger))
   }
 
   private controllers(): void {
@@ -40,6 +45,6 @@ export class SetupServer {
 
   public start(): void {
     this.server = this.app.listen(this.port)
-    console.log('Server listen on port', this.port)
+    logger.info('Server listen on port', this.port)
   }
 }

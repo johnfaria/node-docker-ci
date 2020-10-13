@@ -1,0 +1,10 @@
+{
+  "App": {
+    "database": {
+      "mongoURL": "mongodb://localhost:27017/my-database-test"
+    },
+    "logger": {
+      "enabled": false
+    }
+  }
+}
