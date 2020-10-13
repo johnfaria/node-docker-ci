@@ -26,7 +26,7 @@ export class SetupServer {
   private middlewares(): void {
     this.app.use(express.json())
     this.app.use(cors({ origin: '*' }))
-    this.app.use(expressPino(logger))
+    this.app.use(expressPino({ logger: logger }))
   }
 
   private controllers(): void {
@@ -37,9 +37,15 @@ export class SetupServer {
     this.orm = await database.connect()
   }
 
-  public close(): void {
+  public closeServer(): void {
     if (this.server) {
       this.server.close()
+    }
+  }
+
+  public async closeDatabase(): Promise<void> {
+    if (this.orm) {
+      await this.orm.close()
     }
   }
 
