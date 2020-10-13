@@ -1,9 +1,12 @@
 import express, { Application } from 'express'
 import * as http from 'http'
 import indexRoute from '@src/routes/index.route'
+import * as database from './database'
+import { MikroORM } from '@mikro-orm/core'
 
 export class SetupServer {
   private server?: http.Server
+  private orm?: MikroORM
 
   constructor(private port = 3000, private app: Application = express()) {}
 
@@ -14,6 +17,7 @@ export class SetupServer {
   public async init(): Promise<void> {
     this.middlewares()
     this.controllers()
+    await this.database()
   }
 
   private middlewares(): void {
@@ -22,6 +26,10 @@ export class SetupServer {
 
   private controllers(): void {
     this.app.use('/', indexRoute)
+  }
+
+  private async database(): Promise<void> {
+    this.orm = await database.connect()
   }
 
   public close(): void {

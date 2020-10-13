@@ -1,9 +1,15 @@
 import { Router } from 'express'
 const router = Router();
 
-import { renderIndex } from '@src/controllers/index.controller'
+import { getUser, getUsers, postUser } from '@src/controllers/index.controller'
 
 router.route('/')
-    .get(renderIndex);
+    .get(getUsers);
+
+router.route('/:id')
+    .get(getUser);
+
+router.route('/')
+    .post(postUser);
 
 export default router;

@@ -31,6 +31,8 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
+    "@mikro-orm/core": "^4.0.2",
+    "@mikro-orm/mongodb": "^4.0.2",
     "express": "^4.17.1",
     "module-alias": "^2.2.2"
   },
