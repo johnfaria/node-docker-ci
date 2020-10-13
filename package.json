@@ -36,8 +36,8 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
-    "@mikro-orm/core": "^4.0.2",
-    "@mikro-orm/mongodb": "^4.0.2",
+    "@mikro-orm/core": "^4.1.0",
+    "@mikro-orm/mongodb": "^4.1.0",
     "config": "^3.3.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
