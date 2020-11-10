@@ -36,14 +36,15 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
-    "@mikro-orm/core": "^4.1.0",
-    "@mikro-orm/mongodb": "^4.1.0",
     "config": "^3.3.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-pino-logger": "^5.0.0",
     "module-alias": "^2.2.2",
-    "pino": "^6.7.0"
+    "pg": "^8.5.0",
+    "pino": "^6.7.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.29"
   },
   "_moduleAliases": {
     "@root": ".",

@@ -1,29 +1,25 @@
-import { EntityManager, EntityRepository, MikroORM } from '@mikro-orm/core'
-import { MongoDriver } from '@mikro-orm/mongodb'
-import { BaseEntity } from './models/BaseEntity'
-import { User } from './models/User'
-import config, { IConfig } from 'config'
-const dbConfig: IConfig = config.get('App.database')
+import { Connection, createConnection } from 'typeorm'
+import config from 'config'
+import { User } from '@src/models/user.model'
+import logger from './logger'
 
-export const DI = {} as {
-  orm: MikroORM
-  em: EntityManager
-  userRepository: EntityRepository<User>
-}
-
-export const connect = async (): Promise<MikroORM> => {
-  const orm = await MikroORM.init<MongoDriver>({
-    entities: [User, BaseEntity],
-    type: 'mongo',
-    clientUrl: dbConfig.get('mongoURL'),
-    implicitTransactions: false, // defaults to false
-    // baseDir: __dirname, // defaults to `process.cwd()`
-  })
-
-  await orm.em.getDriver().createCollections()
-
-  DI.orm = orm
-  DI.em = orm.em
-  DI.userRepository = DI.orm.em.getRepository(User)
-  return orm
+export async function databaseConnect(): Promise<Connection> {
+  try {
+    const connection = await createConnection({
+      type: 'postgres',
+      host: config.get('App.database.host') as string,
+      port: config.get('App.database.port') as number,
+      username: config.get('App.database.username') as string,
+      password: config.get('App.database.password') as string,
+      database: config.get('App.database.database') as string,
+      entities: [User],
+      synchronize: true,
+      logging: false,
+    })
+    logger.info('Connected to the database')
+    return connection
+  } catch (error) {
+    logger.error(error.message)
+    return error
+  }
 }

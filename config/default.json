@@ -1,11 +1,20 @@
 {
   "App": {
+    "port": "3000",
     "database": {
-      "mongoURL": "mongodb://localhost:27017/my-database"
+      "type": "postgres",
+      "host": "localhost",
+      "port": 5432,
+      "username": "postgres",
+      "password": "Pass2020!",
+      "database": "ts_start"
     },
     "logger": {
       "enabled": true,
       "level": "info"
+    },
+    "auth": {
+      "key": "secret"
     }
   }
 }

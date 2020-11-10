@@ -1,15 +1,15 @@
 import express, { Application } from 'express'
-import * as http from 'http'
-import indexRoute from '@src/routes/index.route'
-import * as database from './database'
-import { MikroORM } from '@mikro-orm/core'
+import { Server } from 'http'
+import userRoute from '@src/routes/user.route'
 import logger from './logger'
 import cors from 'cors'
 import expressPino from 'express-pino-logger'
+import { databaseConnect } from './database'
+import { Connection } from 'typeorm'
 
 export class SetupServer {
-  private server?: http.Server
-  private orm?: MikroORM
+  private server?: Server
+  private database?: Connection
 
   constructor(private port = 3000, private app: Application = express()) {}
 
@@ -20,7 +20,7 @@ export class SetupServer {
   public async init(): Promise<void> {
     this.middlewares()
     this.controllers()
-    await this.database()
+    await this.initDatabase()
   }
 
   private middlewares(): void {
@@ -30,11 +30,7 @@ export class SetupServer {
   }
 
   private controllers(): void {
-    this.app.use('/', indexRoute)
-  }
-
-  private async database(): Promise<void> {
-    this.orm = await database.connect()
+    this.app.use('/', userRoute)
   }
 
   public closeServer(): void {
@@ -43,14 +39,18 @@ export class SetupServer {
     }
   }
 
-  public async closeDatabase(): Promise<void> {
-    if (this.orm) {
-      await this.orm.close()
+  public start(): void {
+    if (this.database?.isConnected) {
+      this.server = this.app.listen(this.port)
+      logger.info(`Server listen on port ${this.port.toString()}`)
     }
   }
 
-  public start(): void {
-    this.server = this.app.listen(this.port)
-    logger.info('Server listen on port', this.port)
+  private async initDatabase(): Promise<void> {
+    this.database = await databaseConnect()
+  }
+
+  public async closeDatabase(): Promise<void> {
+    await this.database?.close()
   }
 }
