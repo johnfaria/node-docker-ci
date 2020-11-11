@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node dist/src/index.js",
-    "dev": "ts-node-dev src/index.ts --respawn | pino-pretty",
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/src/index.js | pino-pretty\"",
     "test": "npm run test:unit && npm run test:functional",
     "test:functional": "jest --projects ./test --runInBand --passWithNoTests",
     "test:unit": "jest --passWithNoTests"
@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/config": "0.0.36",
     "@types/cors": "^2.8.8",
     "@types/express": "^4.17.8",
@@ -26,16 +27,19 @@
     "@types/supertest": "^2.0.10",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
     "@typescript-eslint/parser": "^4.1.0",
+    "concurrently": "^5.3.0",
     "eslint": "^7.8.1",
     "jest": "^26.4.2",
+    "nodemon": "^2.0.6",
     "pino-pretty": "^4.3.0",
     "prettier": "^2.1.1",
     "supertest": "^4.0.2",
     "ts-jest": "^26.3.0",
-    "ts-node-dev": "^1.0.0-pre.62",
     "typescript": "^4.0.2"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "class-validator": "^0.12.2",
     "config": "^3.3.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
