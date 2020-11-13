@@ -1,7 +1,8 @@
+import { ErrorHandler } from '@src/helpers/internal-error'
 import { User } from '@src/models/user.model'
 import { getAllUsersFromDatabase } from '@src/services/user.service'
-import { Request, Response, RequestHandler } from 'express'
-import { getRepository } from 'typeorm'
+import { Request, Response, RequestHandler, NextFunction } from 'express'
+import { getRepository, QueryFailedError } from 'typeorm'
 
 export const getUsers: RequestHandler = async (
   _: Request,
@@ -13,13 +14,18 @@ export const getUsers: RequestHandler = async (
 
 export const createUser: RequestHandler = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...response } = await getRepository(User).save(req.user)
     res.send(response)
   } catch (error) {
-    res.send(error)
+    if (error instanceof QueryFailedError) {
+      next(new ErrorHandler(error.message, 422))
+    } else {
+      next(new ErrorHandler(error.message))
+    }
   }
 }

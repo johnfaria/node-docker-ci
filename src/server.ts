@@ -6,6 +6,7 @@ import cors from 'cors'
 import expressPino from 'express-pino-logger'
 import { databaseConnect } from './database'
 import { Connection } from 'typeorm'
+import { handleError } from '@src/middleware/handle-error.middleware'
 
 export class SetupServer {
   private server?: Server
@@ -31,6 +32,7 @@ export class SetupServer {
 
   private controllers(): void {
     this.app.use('/', userRoute)
+    this.app.use(handleError)
   }
 
   public closeServer(): void {
