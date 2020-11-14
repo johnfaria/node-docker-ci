@@ -16,7 +16,7 @@ export async function databaseConnect(): Promise<Connection> {
       synchronize: true,
       logging: false,
     })
-    logger.info('Connected to the database')
+    logger.info(`Connected to the database: ${config.get('App.database.host') as string}`)
     return connection
   } catch (error) {
     logger.error(error.message)

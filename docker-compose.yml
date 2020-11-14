@@ -1,0 +1,38 @@
+version: '3'
+services: 
+    express-app:
+        container_name: express-app
+        build: .
+        command: npm run dev
+        restart: unless-stopped
+        ports: 
+            - 3000:3000
+        environment: 
+            DATABASE_HOST: postgres-db
+        volumes:
+            - ./:/src/
+            - nodemodules:/src/node_modules
+        depends_on:
+            - postgres-db
+        networks:
+            - app-connect
+    postgres-db:
+        container_name: postgres-db
+        image: postgres:11 
+        restart: unless-stopped
+        volumes:
+            - postgres-artigo-data:/data
+        environment: 
+            POSTGRES_DB: ts_start
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: Pass2020!       
+        networks:
+            - app-connect
+
+volumes:
+    postgres-artigo-data:
+    nodemodules: {}
+
+networks:
+  app-connect:
+      driver: bridge
