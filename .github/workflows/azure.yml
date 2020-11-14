@@ -1,0 +1,50 @@
+# This workflow will build and push a node.js application to an Azure Web App when a release is created.
+on:
+  push:
+    branches:
+      - master
+      
+env:
+  NODE_VERSION: '12.x'                # set this to the node version to use
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # - name: Setup Database
+      #   uses: harmon758/postgresql-action@v1
+      #   with:
+      #     postgresql version: '11'
+      #     postgresql db: 'test'
+      #     postgresql user: 'postgres'
+      #     postgresql password: 'Pass2020!'
+
+      - name: npm install, build, and test
+        run: |
+          # Build and test the project, then
+          # deploy to Azure Web App.
+          npm install -g typescript
+          npm install
+          npm run build --if-present
+          # npm run test
+
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: johnfaria/ts_start_app
+          tag_with_ref: true
