@@ -7,12 +7,16 @@ import expressPino from 'express-pino-logger'
 import { databaseConnect } from './database'
 import { Connection } from 'typeorm'
 import { handleError } from '@src/middleware/handle-error.middleware'
+import config from 'config'
 
 export class SetupServer {
   private server?: Server
   private database?: Connection
 
-  constructor(private port = 3000, private app: Application = express()) {}
+  constructor(
+    private port = config.get('App.port') as string,
+    private app: Application = express()
+  ) {}
 
   public get App(): Application {
     return this.app
