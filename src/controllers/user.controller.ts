@@ -9,7 +9,7 @@ export const getUsers: RequestHandler = async (
   res: Response
 ): Promise<void> => {
   const users = await getAllUsersFromDatabase()
-  res.json({ users: users })
+  res.json(users)
 }
 
 export const createUser: RequestHandler = async (
@@ -18,6 +18,8 @@ export const createUser: RequestHandler = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    console.log(req.user);
+    
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...response } = await getRepository(User).save(req.user)
     res.send(response)

@@ -1,6 +1,6 @@
 import { User } from '@src/models/user.model'
 import { Request, Response, NextFunction, RequestHandler } from 'express'
-import { validate, ValidationError } from 'class-validator'
+import { validate } from 'class-validator'
 import { ErrorHandler } from '@src/helpers/internal-error'
 
 export const validateUser: RequestHandler = async (

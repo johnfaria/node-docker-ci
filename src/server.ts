@@ -8,6 +8,8 @@ import { databaseConnect } from './database'
 import { Connection } from 'typeorm'
 import { handleError } from '@src/middleware/handle-error.middleware'
 import config from 'config'
+import swaggerUi from 'swagger-ui-express'
+import swaggerDocument from '@src/docs/docs.schema.json'
 
 export class SetupServer {
   private server?: Server
@@ -32,6 +34,7 @@ export class SetupServer {
     this.app.use(express.json())
     this.app.use(cors({ origin: '*' }))
     this.app.use(expressPino({ logger: logger }))
+    this.app.use('/docs',swaggerUi.serve, swaggerUi.setup(swaggerDocument))
   }
 
   private controllers(): void {
