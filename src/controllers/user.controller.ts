@@ -19,7 +19,7 @@ export const createUser: RequestHandler = async (
 ): Promise<void> => {
   try {
     console.log(req.user);
-    
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...response } = await getRepository(User).save(req.user)
     res.send(response)
@@ -30,4 +30,8 @@ export const createUser: RequestHandler = async (
       next(new ErrorHandler(error.message))
     }
   }
+}
+
+export const HelloWorldHandler = async (_req: Request, res: Response, _next: NextFunction) => {
+  res.send("<h1>Hello World from Actions</h1>")
 }
